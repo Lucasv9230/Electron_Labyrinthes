@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Chenille et l'Oiseau Gardien - Jeu de Labyrinthe</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        🐛 LABYRINTHES
+      </div>
+      <ul class="nav-links">
+        <li><a href="#rules">Règles</a></li>
+        <li><a href="#features">Catégories</a></li>
+        <li><a href="top.html" class="nav-link-top">Top Joueurs</a></li>
+        <li><a href="auth.html" class="btn-nav">Jouer</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>La Chenille et l'<span class="accent">Oiseau Gardien</span></h1>
+      <p class="hero-subtitle">Explore, Découvre, Gagne</p>
+      <p class="hero-description">
+        Plonge dans un labyrinthe captivant où tu contrôles une petite chenille. Trouve la clé mystérieuse, évite l'oiseau gardien et atteins la porte de la liberté. Un jeu simple mais palpitant qui te mettra au défi!
+      </p>
+      <div class="cta-buttons">
+        <button class="btn-primary" onclick="goToAuth()">Commencer</button>
+        <button class="btn-secondary" onclick="scrollToRules()">En Savoir Plus</button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="mini-game-container">
+        <canvas id="miniGameCanvas"></canvas>
+        <div class="game-info">
+          <span>🎮 Mini Jeu Demo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Règles Section -->
+  <section class="section" id="rules">
+    <h2 class="section-title">📋 Comment Jouer</h2>
+
+    <div class="rules">
+      <h3>🎯 Ton Objectif</h3>
+      <p style="color: #bdc3c7; margin-bottom: 1.5rem;">
+        Contrôle une adorable petite chenille et navigue dans un labyrinthe pour:
+      </p>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h4>🔑 Récupérer la Clé</h4>
+          <p>Trouve la clé cachée dans le labyrinthe. Elle te permettra d'accéder à la porte finale.</p>
+        </div>
+        <div class="rule-card">
+          <h4>🦅 Éviter l'Oiseau</h4>
+          <p>Le seul vrai danger! L'oiseau gardien patrouille et surveille la clé. Toucher l'oiseau = recommencer le niveau!</p>
+        </div>
+        <div class="rule-card">
+          <h4>🚪 Atteindre la Porte</h4>
+          <p>Une fois la clé récupérée, dépêche-toi d'atteindre la porte pour gagner le niveau et progresser.</p>
+        </div>
+        <div class="rule-card">
+          <h4>🧱 Les Murs</h4>
+          <p>Les murs bloquent juste le passage. Aucun danger à les toucher, ils ralentissent juste ta progression!</p>
+        </div>
+        <div class="rule-card">
+          <h4>🐢 Vitesse Constante</h4>
+          <p>Ta chenille avance lentement et régulièrement. C'est un gameplay calme mais stressant!</p>
+        </div>
+        <div class="rule-card">
+          <h4>⏱️ Pas de Limite Temps</h4>
+          <p>Prends ton temps! Il n'y a pas de chrono. Seul l'oiseau compte vraiment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features/Catégories Section -->
+  <section class="section" id="features">
+    <h2 class="section-title">🎮 Trois Niveaux de Difficulté</h2>
+
+    <h3 style="color: var(--snake-green); font-size: 1.5rem; margin-bottom: 2rem; text-align: center;">
+      📏 Choisis ta Taille de Labyrinthe
+    </h3>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🟩</div>
+        <h3>Petite</h3>
+        <p>Labyrinthe court et accueillant. Parfait pour apprendre les contrôles et comprendre le jeu.</p>
+        <div style="color: #95a5a6; margin-top: 1rem; font-size: 0.9rem;">
+          ✓ Peu de détours<br>
+          ✓ Exploration rapide<br>
+          ✓ Idéal pour débuter
+        </div>
+        <span class="size-badge">Recommandé pour les nouveaux</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🟦</div>
+        <h3>Moyenne</h3>
+        <p>Taille équilibrée avec une bonne dose d'exploration. Plus intéressante mais toujours accessible.</p>
+        <div style="color: #95a5a6; margin-top: 1rem; font-size: 0.9rem;">
+          ✓ Exploration simple<br>
+          ✓ Quelques zones larges<br>
+          ✓ Bien équilibrée
+        </div>
+        <span class="size-badge">Le choix populaire</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🟥</div>
+        <h3>Grande</h3>
+        <p>Labyrinthe complet avec plusieurs chemins possibles. Pour les joueurs qui veulent plus de challenge!</p>
+        <div style="color: #95a5a6; margin-top: 1rem; font-size: 0.9rem;">
+          ✓ Plus de chemins<br>
+          ✓ Exploration complète<br>
+          ✓ Pour les champions
+        </div>
+        <span class="size-badge">Challenge maximal</span>
+      </div>
+    </div>
+
+    <!-- Difficulté -->
+    <h3 style="color: var(--snake-green); font-size: 1.5rem; margin-bottom: 2rem; margin-top: 4rem; text-align: center;">
+      🎚️ Ajuste la Difficulté (1 à 10)
+    </h3>
+
+    <div class="difficulty-grid">
+      <div class="difficulty-card">
+        <div class="difficulty-level">⭐ Facile (1-3)</div>
+        <div class="difficulty-stats">
+          <span>🐢 Oiseau très lent</span>
+          <span>📍 Zone de patrouille courte</span>
+          <span>⏱️ Temps pour réagir</span>
+          <span>🎯 Parfait pour détendre</span>
+        </div>
+      </div>
+
+      <div class="difficulty-card">
+        <div class="difficulty-level">⭐⭐ Normal (4-7)</div>
+        <div class="difficulty-stats">
+          <span>🦅 Oiseau équilibré</span>
+          <span>📍 Zone moyenne</span>
+          <span>⏱️ Timing plus serré</span>
+          <span>🎯 Expérience standard</span>
+        </div>
+      </div>
+
+      <div class="difficulty-card">
+        <div class="difficulty-level">⭐⭐⭐ Difficile (8-10)</div>
+        <div class="difficulty-stats">
+          <span>🔥 Oiseau très rapide</span>
+          <span>📍 Zone de patrouille large</span>
+          <span>⚡ Mouvement imprévisible</span>
+          <span>🎯 Vrai défi!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="section" style="text-align: center; padding: 5rem 2rem; background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, transparent 100%);">
+    <h2 class="section-title">Prêt à Relever le Défi?</h2>
+    <p style="font-size: 1.1rem; color: #bdc3c7; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+      Crée un compte, personnalise ta difficulté, et plonge dans l'aventure! Combien de niveaux pourras-tu compléter?
+    </p>
+    <button class="btn-primary" onclick="goToAuth()" style="margin: 0 auto;">
+      Commencer à Jouer
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>🐛 La Chenille et l'Oiseau Gardien © 2026 | Un jeu de réflexe et d'exploration | <a href="top.html" style="color: var(--snake-green); text-decoration: none;">Voir le Classement</a></p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/mini-game.js"></script>
+  <script src="../js/landing.js"></script>
+</body>
+</html>

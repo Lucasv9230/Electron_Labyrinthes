@@ -1,0 +1,28 @@
+## Installation
+
+### Initialiser le projet
+npm init -y
+
+### Installer Electron
+npm install electron --save-dev
+
+### Installer electron-builder (création du .exe)
+npm install electron-builder --save-dev
+
+### Installer la base de données (better-sqlite3)
+npm install better-sqlite3
+
+### Installer Express (API locale)
+npm install express
+
+### Installer bcrypt (hash des mots de passe)
+npm install bcrypt
+
+### Installer JSON Web Token (authentification)
+npm install jsonwebtoken
+
+## Lancer l'application
+npm start
+
+## Générer le .exe
+npx electron-builder

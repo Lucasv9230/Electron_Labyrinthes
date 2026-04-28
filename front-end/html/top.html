@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Joueurs - La Chenille et l'Oiseau Gardien</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 3rem 2rem;
+    }
+
+    .top-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .top-header h1 {
+      font-size: 2.5rem;
+      color: var(--snake-green);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .top-header p {
+      color: #95a5a6;
+      font-size: 1.1rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 0.75rem 1.5rem;
+      background: rgba(46, 204, 113, 0.1);
+      border: 2px solid var(--snake-green);
+      color: var(--snake-green);
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--snake-green);
+      color: #1a1a1a;
+    }
+
+    .leaderboard-container {
+      background: rgba(26, 26, 26, 0.9);
+      border: 2px solid var(--snake-green);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px var(--snake-shadow);
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table thead {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.2) 0%, rgba(46, 204, 113, 0.1) 100%);
+      border-bottom: 2px solid var(--snake-green);
+    }
+
+    .leaderboard-table th {
+      padding: 1.25rem 1rem;
+      text-align: left;
+      color: var(--snake-highlight);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .leaderboard-table tbody tr {
+      border-bottom: 1px solid rgba(46, 204, 113, 0.1);
+      transition: var(--transition);
+    }
+
+    .leaderboard-table tbody tr:hover {
+      background: rgba(46, 204, 113, 0.05);
+      transform: translateX(5px);
+    }
+
+    .leaderboard-table td {
+      padding: 1.25rem 1rem;
+      color: #ecf0f1;
+    }
+
+    .rank {
+      color: var(--snake-green);
+      font-weight: 700;
+      font-size: 1.2rem;
+      min-width: 40px;
+    }
+
+    .rank.top-1 {
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .rank.top-2 {
+      color: #c0c0c0;
+    }
+
+    .rank.top-3 {
+      color: #cd7f32;
+    }
+
+    .player-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .player-avatar {
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(135deg, var(--snake-green), var(--snake-accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a1a1a;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .score {
+      font-weight: 700;
+      color: var(--snake-highlight);
+      font-size: 1.1rem;
+    }
+
+    .levels {
+      background: rgba(46, 204, 113, 0.1);
+      padding: 0.3rem 0.75rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #95a5a6;
+    }
+
+    .time {
+      color: #95a5a6;
+      font-size: 0.9rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #95a5a6;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .personal-best {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.15) 0%, rgba(46, 204, 113, 0.05) 100%);
+      border: 2px solid var(--snake-green);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .personal-best h2 {
+      color: var(--snake-green);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .personal-best-score {
+      font-size: 2rem;
+      color: var(--snake-highlight);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .personal-best-info {
+      color: #95a5a6;
+      font-size: 0.9rem;
+    }
+
+    .medal {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 2rem 1rem;
+      }
+
+      .top-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+      }
+
+      .player-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        🐛 LABYRINTHES
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="auth.html" class="btn-nav">Jouer</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <div class="top-header">
+      <h1>🏆 Classement des Joueurs</h1>
+      <p>Les meilleurs explorateurs de labyrinthes</p>
+    </div>
+
+    <!-- Personal Best -->
+    <div class="personal-best" id="personalBest" style="display: none;">
+      <h2><span class="medal">🎖️</span>Ton Meilleur Score</h2>
+      <div class="personal-best-score" id="personalScore">0</div>
+      <div class="personal-best-info">
+        <span id="personalLevels">0 niveaux complétés</span> • 
+        <span id="personalDate">Aujourd'hui</span>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterBy('all')">Tous les Temps</button>
+      <button class="filter-btn" onclick="filterBy('week')">Cette Semaine</button>
+      <button class="filter-btn" onclick="filterBy('month')">Ce Mois</button>
+      <button class="filter-btn" onclick="filterBy('friends')">Mes Amis</button>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-container">
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th style="width: 10%;">Rang</th>
+            <th style="width: 30%;">Joueur</th>
+            <th style="width: 20%;">Score</th>
+            <th style="width: 20%;">Niveaux</th>
+            <th style="width: 20%;">Mise à Jour</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <!-- Les données seront insérées par JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>🐛 La Chenille et l'Oiseau Gardien © 2026 | <a href="index.html" style="color: var(--snake-green); text-decoration: none;">Retour à la landing</a></p>
+  </footer>
+
+  <script src="../js/top.js"></script>
+</body>
+</html>
