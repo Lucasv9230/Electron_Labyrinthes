@@ -14,7 +14,10 @@ class MiniLabyrinthGame {
     
     this.player = { x: 1, y: 1, vx: 0, vy: 0 };
     this.key = null;
-    this.door = { x: this.gridWidth - 2, y: this.gridHeight - 2 };
+
+    // PORTE : dans une case vide, mur à droite
+    this.door = { x: this.gridWidth - 3, y: this.gridHeight - 2 };
+
     this.bird = null;
     this.hasKey = false;
     this.maze = [];
@@ -52,8 +55,15 @@ class MiniLabyrinthGame {
     };
     
     carve(1, 1);
+
+    // Case du joueur
     this.maze[1][1] = 0;
-    this.maze[this.gridHeight - 2][this.gridWidth - 2] = 0;
+
+    // Case de la porte (vide)
+    this.maze[this.gridHeight - 2][this.gridWidth - 3] = 0;
+
+    // MUR à droite de la porte → touche 100%
+    this.maze[this.gridHeight - 2][this.gridWidth - 2] = 1;
   }
   
   initGame() {
@@ -76,7 +86,7 @@ class MiniLabyrinthGame {
       const x = Math.floor(Math.random() * (this.gridWidth - 2)) + 1;
       const y = Math.floor(Math.random() * (this.gridHeight - 2)) + 1;
       if (this.maze[y][x] === 0 && Math.hypot(x - this.key.x, y - this.key.y) > 3) {
-        this.bird = { x, y, sx: x, sy: y, angle: 0, speed: 0.08 };
+        this.bird = { x, y };
         birdOk = true;
       }
     }
@@ -133,7 +143,6 @@ class MiniLabyrinthGame {
   }
   
   update() {
-    // Move player
     const newX = this.player.x + this.player.vx;
     const newY = this.player.y + this.player.vy;
     
@@ -141,38 +150,20 @@ class MiniLabyrinthGame {
       this.player.x = newX;
       this.player.y = newY;
     }
-    
-    // Update bird
-    this.bird.angle += (Math.random() - 0.5) * 0.2;
-    const bx = this.bird.sx + Math.cos(this.bird.angle) * 2;
-    const by = this.bird.sy + Math.sin(this.bird.angle) * 2;
-    this.bird.x += (bx - this.bird.x) * this.bird.speed;
-    this.bird.y += (by - this.bird.y) * this.bird.speed;
-    
-    // Key check
+
     if (Math.hypot(this.player.x - this.key.x, this.player.y - this.key.y) < 0.5) {
       this.hasKey = true;
     }
     
-    // Win check
     if (this.hasKey && Math.hypot(this.player.x - this.door.x, this.player.y - this.door.y) < 0.8) {
       this.initGame();
-    }
-    
-    // Bird collision check
-    if (Math.hypot(this.player.x - this.bird.x, this.player.y - this.bird.y) < 0.8) {
-      this.player.x = 1;
-      this.player.y = 1;
-      this.hasKey = false;
     }
   }
   
   draw() {
-    // Background
     this.ctx.fillStyle = '#0a1a0a';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     
-    // Draw maze
     this.ctx.fillStyle = this.colors.wall;
     for (let y = 0; y < this.gridHeight; y++) {
       for (let x = 0; x < this.gridWidth; x++) {
@@ -182,16 +173,15 @@ class MiniLabyrinthGame {
       }
     }
     
-    // Draw door
+    // PORTE : touche un mur à 100%
     this.ctx.fillStyle = '#ff6b6b';
     this.ctx.fillRect(
-      this.door.x * this.tileSize + 2,
-      this.door.y * this.tileSize + 2,
-      this.tileSize - 4,
-      this.tileSize - 4
+      this.door.x * this.tileSize,
+      this.door.y * this.tileSize,
+      this.tileSize,
+      this.tileSize
     );
-    
-    // Draw key
+
     if (!this.hasKey) {
       this.ctx.fillStyle = '#ffd700';
       this.ctx.beginPath();
@@ -205,16 +195,13 @@ class MiniLabyrinthGame {
       this.ctx.fill();
     }
     
-    // Draw bird
     this.ctx.font = '16px Arial';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
     this.ctx.fillText('🦅', this.bird.x * this.tileSize + this.tileSize / 2, this.bird.y * this.tileSize + this.tileSize / 2);
     
-    // Draw player
     this.ctx.fillText('🐛', this.player.x * this.tileSize + this.tileSize / 2, this.player.y * this.tileSize + this.tileSize / 2);
     
-    // Draw border
     this.ctx.strokeStyle = this.colors.player;
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
@@ -227,7 +214,6 @@ class MiniLabyrinthGame {
   }
 }
 
-// Initialiser le mini-jeu immédiatement (script est à la fin du body)
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     new MiniLabyrinthGame('miniGameCanvas');
