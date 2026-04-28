@@ -109,7 +109,6 @@ nav {
   background: var(--snake-green);
   color: #1a1a1a;
   padding: 0.6rem 1.5rem;
-  border: none;
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
