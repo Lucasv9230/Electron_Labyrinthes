@@ -22,7 +22,8 @@
     },
     "files": [
       "index.js",
-      "front-end/html/index.html",
+      "front-end/**/*",
+      "backend/**/*",
       "package.json"
     ],
     "win": {
