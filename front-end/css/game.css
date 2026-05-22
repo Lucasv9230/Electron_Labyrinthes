@@ -1,1 +1,403 @@
-/* Game Styles */
+/* ── Page de jeu simplifiée ─────────────────────────────────────────────────── */
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+/* ── Layout général (ancienne page) ────────────────────────────────────────── */
+.game-layout {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.sidebar h2 {
+  color: var(--snake-green);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.saved-item {
+  background: rgba(46, 204, 113, 0.08);
+  border: 1px solid var(--snake-border);
+  border-radius: 8px;
+  padding: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.saved-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.saved-name {
+  color: #ecf0f1;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.saved-meta {
+  color: #95a5a6;
+  font-size: 0.75rem;
+}
+
+.saved-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.saved-actions button {
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid var(--snake-border);
+  border-radius: 5px;
+  color: #ecf0f1;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.saved-actions button:hover   { background: var(--snake-green); color: #1a1a1a; }
+.saved-actions .btn-danger:hover { background: var(--snake-danger); }
+
+.empty-list { color: #95a5a6; font-size: 0.9rem; text-align: center; margin-top: 1rem; }
+
+/* ── Zone principale ────────────────────────────────────────────────────────── */
+.game-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Panneau de contrôles ───────────────────────────────────────────────────── */
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid var(--snake-border);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.control-group label {
+  color: #95a5a6;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-group input[type="text"],
+.control-group select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--snake-border);
+  border-radius: 6px;
+  color: #ecf0f1;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.control-group input[type="range"] {
+  accent-color: var(--snake-green);
+  width: 140px;
+}
+
+.btn-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid var(--snake-green);
+  border-radius: 8px;
+  color: var(--snake-green);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-action:hover:not(:disabled) {
+  background: var(--snake-green);
+  color: #1a1a1a;
+}
+
+.btn-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-save {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #3498db;
+  color: #fff;
+}
+
+.btn-cancel {
+  border-color: var(--snake-danger);
+  color: var(--snake-danger);
+}
+
+.btn-cancel:hover { background: var(--snake-danger); color: #fff; }
+
+/* ── Statut ─────────────────────────────────────────────────────────────────── */
+.status-msg {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border-left: 4px solid;
+}
+
+.status-info    { background: rgba(52, 152, 219, 0.1); border-color: #3498db; color: #7fb3d3; }
+.status-success { background: rgba(46, 204, 113, 0.1); border-color: var(--snake-green); color: var(--snake-green); }
+.status-error   { background: rgba(231, 76, 60, 0.1);  border-color: var(--snake-danger); color: #e74c3c; }
+
+/* ── Canvas ─────────────────────────────────────────────────────────────────── */
+.canvas-wrapper {
+  background: #0a1a0a;
+  border: 2px solid var(--snake-green);
+  border-radius: 10px;
+  overflow: auto;
+  max-height: 65vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-shadow: 0 0 20px var(--snake-shadow);
+}
+
+#mazeCanvas { display: block; }
+
+/* ── Légende ────────────────────────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: #95a5a6;
+  align-items: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* ── Panneau de fin de partie ─────────────────────────────────────────────── */
+.end-panel {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  border: 2px solid;
+  align-items: center;
+  justify-content: center;
+}
+
+.end-panel.end-win  { border-color: var(--snake-green);  background: rgba(46, 204, 113, 0.08); }
+.end-panel.end-lose { border-color: var(--snake-danger); background: rgba(231, 76, 60, 0.08); }
+
+.end-panel .btn-action {
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* ── Admin layout ───────────────────────────────────────────────────────────── */
+.admin-layout {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--snake-border);
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid var(--snake-border);
+  border-radius: 8px 8px 0 0;
+  color: #95a5a6;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  transition: var(--transition);
+}
+
+.tab-btn.active, .tab-btn:hover {
+  background: rgba(46, 204, 113, 0.15);
+  border-color: var(--snake-green);
+  color: var(--snake-green);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.tab-content h2 {
+  color: var(--snake-green);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Stats cards ───────────────────────────────────────────────────────────── */
+.stats-cards {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  background: rgba(46, 204, 113, 0.08);
+  border: 1px solid var(--snake-green);
+  border-radius: 10px;
+  padding: 1.5rem 2.5rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--snake-green);
+  line-height: 1;
+}
+
+.stat-label { color: #95a5a6; font-size: 0.9rem; margin-top: 0.3rem; }
+
+/* ── Tables admin ───────────────────────────────────────────────────────────── */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th {
+  background: rgba(46, 204, 113, 0.15);
+  color: var(--snake-green);
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--snake-border);
+  color: #ecf0f1;
+}
+
+.admin-table tr:hover td { background: rgba(46, 204, 113, 0.04); }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-admin { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+.badge-user  { background: rgba(46, 204, 113, 0.2); color: var(--snake-green); border: 1px solid var(--snake-green); }
+
+.action-btns { display: flex; gap: 0.4rem; }
+
+.btn-sm {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid var(--snake-border);
+  border-radius: 5px;
+  color: #ecf0f1;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.btn-sm:hover   { background: var(--snake-green); color: #1a1a1a; }
+.btn-danger     { border-color: var(--snake-danger) !important; }
+.btn-sm.btn-danger:hover { background: var(--snake-danger); color: #fff; }
+
+/* ── Formulaire création ────────────────────────────────────────────────────── */
+.create-form {
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid var(--snake-green);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.create-form h3 { color: var(--snake-green); margin-bottom: 1rem; }
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--snake-border);
+  border-radius: 6px;
+  color: #ecf0f1;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Choisir un labyrinthe - Labyrinthes</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/lobby.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">🐛 LABYRINTHES</div>
+      <ul class="nav-links">
+        <li><span id="userName" style="color:var(--snake-green)"></span></li>
+        <li><a href="top.html">Classement</a></li>
+        <li><a onclick="logout()" style="cursor:pointer;color:var(--snake-danger)">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="lobby-container">
+    <h1 class="lobby-title">Choisis ton labyrinthe</h1>
+
+    <div class="size-cards">
+      <div class="size-card" onclick="selectSize('small')" id="card-small">
+        <div class="size-icon">🗺</div>
+        <div class="size-name">Petit</div>
+        <div class="size-dim">11 × 11</div>
+        <div class="size-desc">Rapide et accessible</div>
+      </div>
+      <div class="size-card selected" onclick="selectSize('medium')" id="card-medium">
+        <div class="size-icon">🗺🗺</div>
+        <div class="size-name">Moyen</div>
+        <div class="size-dim">21 × 21</div>
+        <div class="size-desc">Le classique</div>
+      </div>
+      <div class="size-card" onclick="selectSize('large')" id="card-large">
+        <div class="size-icon">🗺🗺🗺</div>
+        <div class="size-name">Grand</div>
+        <div class="size-dim">31 × 31</div>
+        <div class="size-desc">Pour les courageux</div>
+      </div>
+    </div>
+
+    <div class="diff-section">
+      <label class="diff-label">Difficulté : <strong id="diffDisplay">5</strong> / 10</label>
+      <input type="range" id="diffSlider" min="1" max="10" value="5" class="diff-slider">
+      <div class="diff-hints">
+        <span>Facile (+ de temps)</span>
+        <span>Difficile (- de temps)</span>
+      </div>
+      <div class="time-preview">⏱️ Temps imparti : <strong id="timePreview">—</strong></div>
+    </div>
+
+    <button class="btn-play" onclick="startGame()">▶ Jouer !</button>
+  </div>
+
+  <script src="../js/lobby.js"></script>
+</body>
+</html>

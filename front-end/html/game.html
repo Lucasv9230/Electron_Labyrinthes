@@ -1,1 +1,45 @@
-<!-- affichage du labyrinthe -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jouer - Labyrinthes</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/game.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">🐛 LABYRINTHES</div>
+      <ul class="nav-links">
+        <li><span id="userName" style="color:var(--snake-green)"></span></li>
+        <li><span id="timerDisplay" style="color:var(--snake-green);font-weight:700;font-size:1.1rem">00:00.0</span></li>
+        <li><a href="lobby.html">← Retour</a></li>
+        <li><a onclick="logout()" style="cursor:pointer;color:var(--snake-danger)">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="game-page">
+    <div id="statusMsg" class="status-msg status-info">Chargement du labyrinthe…</div>
+
+    <div class="canvas-wrapper">
+      <canvas id="mazeCanvas"></canvas>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:#2ecc71"></span> Départ</span>
+      <span><span class="dot" style="background:#e74c3c"></span> Arrivée</span>
+      <span><span class="dot" style="background:#f1c40f"></span> Chemin optimal (fin de partie)</span>
+      <span>🔑 Clé &nbsp; 🐛 Toi</span>
+      <span style="color:#95a5a6;font-size:.85rem">Touches : ↑↓←→ ou ZQSD</span>
+    </div>
+
+    <div id="endPanel" class="end-panel" style="display:none">
+      <button id="replayBtn" class="btn-action" onclick="replay()">🔄 Rejouer</button>
+      <a href="lobby.html" class="btn-action btn-cancel">← Retour au lobby</a>
+    </div>
+  </div>
+
+  <script src="../js/game.js"></script>
+</body>
+</html>

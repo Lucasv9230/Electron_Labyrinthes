@@ -1,1 +1,133 @@
-<!--panel admin-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Administration - Labyrinthes</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">🐛 ADMIN</div>
+      <ul class="nav-links">
+        <li><span id="adminName" style="color:var(--snake-green)"></span></li>
+        <li><a onclick="logout()" style="cursor:pointer;color:var(--snake-danger)">Déconnexion</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+    <!-- Onglets -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mazes', this)">🗺 Labyrinthes Actifs</button>
+      <button class="tab-btn" onclick="showTab('stats', this)">📊 Statistiques</button>
+      <button class="tab-btn" onclick="showTab('users', this)">👥 Utilisateurs</button>
+    </div>
+
+    <!-- Labyrinthes actifs (grille admin) -->
+    <div id="tab-mazes" class="tab-content active">
+      <h2>🗺 Labyrinthes actifs pour les joueurs</h2>
+      <p style="color:#95a5a6;margin-bottom:1.5rem">Génère un labyrinthe par taille. Les joueurs joueront sur ces labyrinthes.</p>
+      <div class="maze-grid">
+        <div class="maze-col">
+          <div class="maze-col-header">
+            <span class="maze-col-title">Petit (11×11)</span>
+            <button class="btn-action" onclick="adminGenerate('small')">⚡ Générer</button>
+          </div>
+          <div class="maze-preview-wrap">
+            <canvas id="previewSmall" class="maze-preview"></canvas>
+            <div id="statusSmall" class="maze-status">Aucun labyrinthe actif</div>
+          </div>
+        </div>
+        <div class="maze-col">
+          <div class="maze-col-header">
+            <span class="maze-col-title">Moyen (21×21)</span>
+            <button class="btn-action" onclick="adminGenerate('medium')">⚡ Générer</button>
+          </div>
+          <div class="maze-preview-wrap">
+            <canvas id="previewMedium" class="maze-preview"></canvas>
+            <div id="statusMedium" class="maze-status">Aucun labyrinthe actif</div>
+          </div>
+        </div>
+        <div class="maze-col">
+          <div class="maze-col-header">
+            <span class="maze-col-title">Grand (31×31)</span>
+            <button class="btn-action" onclick="adminGenerate('large')">⚡ Générer</button>
+          </div>
+          <div class="maze-preview-wrap">
+            <canvas id="previewLarge" class="maze-preview"></canvas>
+            <div id="statusLarge" class="maze-status">Aucun labyrinthe actif</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div id="tab-stats" class="tab-content">
+      <h2>📊 Statistiques globales</h2>
+      <div class="stats-cards">
+        <div class="stat-card">
+          <div class="stat-number" id="statUsers">—</div>
+          <div class="stat-label">Utilisateurs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="statLabs">—</div>
+          <div class="stat-label">Labyrinthes créés</div>
+        </div>
+      </div>
+      <h3 style="margin-top:2rem;color:var(--snake-green)">Labyrinthes par utilisateur</h3>
+      <table class="admin-table">
+        <thead><tr><th>Utilisateur</th><th>Labyrinthes</th></tr></thead>
+        <tbody id="statsTable"></tbody>
+      </table>
+    </div>
+
+    <!-- Utilisateurs -->
+    <div id="tab-users" class="tab-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2>👥 Gestion des Utilisateurs</h2>
+        <button class="btn-action" onclick="showCreateUser()">+ Créer un utilisateur</button>
+      </div>
+
+      <form id="createUserForm" onsubmit="submitCreateUser(event)" style="display:none" class="create-form">
+        <h3>Nouvel utilisateur</h3>
+        <div class="form-row">
+          <input type="text"  id="newFirstName" placeholder="Prénom"    required>
+          <input type="text"  id="newLastName"  placeholder="Nom"       required>
+        </div>
+        <div class="form-row">
+          <input type="email"    id="newEmail"     placeholder="Email"     required>
+          <input type="password" id="newPassword"  placeholder="Mot de passe" required>
+        </div>
+        <div class="form-row">
+          <input type="number" id="newBirthYear" placeholder="Année naissance" min="1950" max="2015">
+          <select id="newRole">
+            <option value="user">Utilisateur</option>
+            <option value="admin">Administrateur</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <button type="submit" class="btn-action">Créer</button>
+          <button type="button" onclick="hideCreateUser()" class="btn-action btn-cancel">Annuler</button>
+        </div>
+      </form>
+
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Nom</th><th>Email</th><th>Rôle</th>
+            <th>Naissance</th><th>Créé le</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable"></tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>
