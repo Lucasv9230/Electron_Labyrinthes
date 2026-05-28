@@ -28,12 +28,19 @@ function saveScore(userId, size, difficulty, time) {
   db.prepare('INSERT INTO scores (userId, size, difficulty, time) VALUES (?, ?, ?, ?)').run(userId, size, difficulty, time);
 }
 
-function getTopPlayers() {
+function getTopPlayers(period = 'all') {
+  let dateCondition = '';
+  if (period === 'week') {
+    dateCondition = "AND s.createdAt >= datetime('now', '-7 days')";
+  } else if (period === 'month') {
+    dateCondition = "AND s.createdAt >= datetime('now', '-1 month')";
+  }
+
   return db.prepare(`
     SELECT u.firstName || ' ' || u.lastName as name, MIN(s.time) as bestTime, s.size, s.difficulty
     FROM scores s
     JOIN users u ON u.id = s.userId
-    WHERE u.role = 'user'
+    WHERE u.role = 'user' ${dateCondition}
     GROUP BY s.userId
     ORDER BY bestTime ASC
     LIMIT 20

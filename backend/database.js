@@ -1,8 +1,11 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const { app } = require('electron');
 
-const dbPath = path.join(__dirname, '..', 'labyrinthes.db');
+const dbPath = app.isPackaged 
+  ? path.join(app.getPath('userData'), 'labyrinthes.db')
+  : path.join(__dirname, '..', 'labyrinthes.db');
 const db = new Database(dbPath);
 
 db.exec(`

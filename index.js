@@ -109,8 +109,8 @@ function setupIPC() {
   });
 
   // ── Classement ──────────────────────────────────────────────────────────────
-  ipcMain.handle('top:getPlayers', async () => {
-    try { return ok(users.getTopPlayers()); }
+  ipcMain.handle('top:getPlayers', async (_, period) => {
+    try { return ok(users.getTopPlayers(period)); }
     catch(e) { return err(e); }
   });
 

@@ -6,8 +6,10 @@ function formatTime(s) {
   return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${tenth}`;
 }
 
+let currentPeriod = 'all';
+
 async function loadTop() {
-  const res = await window.api.top.getPlayers();
+  const res = await window.api.top.getPlayers(currentPeriod);
   const tbody = document.getElementById('leaderboardBody');
 
   if (!res.success || !res.data.length) {
@@ -25,5 +27,17 @@ async function loadTop() {
     </tr>
   `).join('');
 }
+
+window.filterBy = function(period) {
+  currentPeriod = period;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    if (btn.getAttribute('onclick').includes(period)) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  loadTop();
+};
 
 loadTop();

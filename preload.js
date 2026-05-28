@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('api', {
     getMazes:        (token) => ipcRenderer.invoke('admin:getMazes', token),
   },
   top: {
-    getPlayers: () => ipcRenderer.invoke('top:getPlayers'),
+    getPlayers: (period) => ipcRenderer.invoke('top:getPlayers', period),
   },
   score: {
     save: (data) => ipcRenderer.invoke('score:save', data),

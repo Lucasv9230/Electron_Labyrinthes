@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "electron": "^41.3.0",
@@ -22,6 +23,7 @@
     },
     "files": [
       "index.js",
+      "preload.js",
       "front-end/**/*",
       "backend/**/*",
       "package.json"
