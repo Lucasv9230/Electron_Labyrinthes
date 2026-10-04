@@ -1,4 +1,3 @@
-// Si ELECTRON_RUN_AS_NODE est actif, on relance sans cette variable
 if (process.env.ELECTRON_RUN_AS_NODE) {
   const { spawn } = require('child_process');
   const env = Object.assign({}, process.env);
@@ -8,9 +7,7 @@ if (process.env.ELECTRON_RUN_AS_NODE) {
 }
 
 const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-
-// Labyrinthes générés par l'admin, partagés avec les joueurs
+const path = require('path');
 const adminMazes = { small: null, medium: null, large: null };
 
 function createWindow() {
@@ -44,9 +41,7 @@ function setupIPC() {
     const decoded = auth.verifyToken(token);
     if (decoded.role !== 'admin') throw new Error('Accès refusé');
     return decoded;
-  }
-
-  // ── Auth ────────────────────────────────────────────────────────────────────
+  }
   ipcMain.handle('auth:register', async (_, data) => {
     try { return ok(auth.register(data.firstName, data.lastName, data.email, data.password, data.birthYear)); }
     catch(e) { return err(e); }
@@ -55,9 +50,7 @@ function setupIPC() {
   ipcMain.handle('auth:login', async (_, data) => {
     try { return ok(auth.login(data.email, data.password)); }
     catch(e) { return err(e); }
-  });
-
-  // ── Labyrinthes utilisateur ─────────────────────────────────────────────────
+  });
   ipcMain.handle('labyrinth:generate', async (_, data) => {
     try { return ok(generateMaze(data.size, data.difficulty)); }
     catch(e) { return err(e); }
@@ -106,15 +99,11 @@ function setupIPC() {
       users.deleteLabyrinth(data.id, decoded.id);
       return ok(true);
     } catch(e) { return err(e); }
-  });
-
-  // ── Classement ──────────────────────────────────────────────────────────────
+  });
   ipcMain.handle('top:getPlayers', async (_, period) => {
     try { return ok(users.getTopPlayers(period)); }
     catch(e) { return err(e); }
-  });
-
-  // ── Admin ───────────────────────────────────────────────────────────────────
+  });
   ipcMain.handle('admin:getUsers', async (_, token) => {
     try { checkAdmin(token); return ok(adminDb.getUsers()); }
     catch(e) { return err(e); }
@@ -152,9 +141,7 @@ function setupIPC() {
   ipcMain.handle('admin:getStats', async (_, token) => {
     try { checkAdmin(token); return ok(adminDb.getStats()); }
     catch(e) { return err(e); }
-  });
-
-  // ── Labyrinthes admin partagés ──────────────────────────────────────────────
+  });
   ipcMain.handle('admin:setMaze', async (_, data) => {
     try {
       checkAdmin(data.token);
@@ -172,13 +159,10 @@ function setupIPC() {
     try {
       auth.verifyToken(data.token);
       const maze = adminMazes[data.size];
-      if (maze) return ok(maze);
-      // Aucun labyrinthe admin pour cette taille : on en génère un
+      if (maze) return ok(maze);
       return ok(generateMaze(data.size, data.difficulty));
     } catch(e) { return err(e); }
-  });
-
-  // ── Scores ──────────────────────────────────────────────────────────────────
+  });
   ipcMain.handle('score:save', async (_, data) => {
     try {
       const decoded = auth.verifyToken(data.token);

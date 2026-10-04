@@ -1,11 +1,8 @@
-// ── Auth admin ────────────────────────────────────────────────────────────────
 const token = localStorage.getItem('token');
 const user  = JSON.parse(localStorage.getItem('user') || 'null');
 if (!token || !user || user.role !== 'admin') { window.location.href = 'auth.html'; }
 
-document.getElementById('adminName').textContent = user.firstName + ' ' + user.lastName;
-
-// ── Onglets ───────────────────────────────────────────────────────────────────
+document.getElementById('adminName').textContent = user.firstName + ' ' + user.lastName;
 function showTab(tab, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -14,9 +11,7 @@ function showTab(tab, btn) {
   if (tab === 'mazes')       loadAdminMazes();
   if (tab === 'stats')       loadStats();
   if (tab === 'users')       loadUsers();
-}
-
-// ── Grille de labyrinthes admin ───────────────────────────────────────────────
+}
 const PREVIEW_SIZE = 240; // px max pour le canvas de preview
 
 function drawPreview(canvasId, maze) {
@@ -70,9 +65,7 @@ async function adminGenerate(size) {
   const cap = size.charAt(0).toUpperCase() + size.slice(1);
   drawPreview('preview' + cap, maze);
   document.getElementById('status' + cap).textContent = `Actif — diff. ${maze.difficulty}`;
-}
-
-// ── Stats ─────────────────────────────────────────────────────────────────────
+}
 async function loadStats() {
   const res = await window.api.admin.getStats(token);
   if (!res.success) return;
@@ -84,9 +77,7 @@ async function loadStats() {
   tbody.innerHTML = labByUser.map(r => `
     <tr><td>${r.name}</td><td>${r.count}</td></tr>
   `).join('') || '<tr><td colspan="2">Aucune donnée</td></tr>';
-}
-
-// ── Utilisateurs ──────────────────────────────────────────────────────────────
+}
 async function loadUsers() {
   const res = await window.api.admin.getUsers(token);
   if (!res.success) return;
@@ -155,16 +146,10 @@ async function deleteUser(id) {
   const res = await window.api.admin.deleteUser({ token, id });
   if (!res.success) return alert('Erreur : ' + res.error);
   loadUsers();
-}
-
-
-
-// ── Déconnexion ───────────────────────────────────────────────────────────────
+}
 function logout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   window.location.href = 'auth.html';
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────────
+}
 loadAdminMazes();

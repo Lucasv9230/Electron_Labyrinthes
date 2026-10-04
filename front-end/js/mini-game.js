@@ -1,4 +1,3 @@
-// Mini Labyrinthes Game pour la démo
 class MiniLabyrinthGame {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
@@ -13,9 +12,7 @@ class MiniLabyrinthGame {
     this.gridHeight = this.canvas.height / this.tileSize;
 
     this.player = { x: 1, y: 1, vx: 0, vy: 0 };
-    this.key = null;
-
-    // PORTE : dans une case vide, mur à droite
+    this.key = null;
     this.door = { x: this.gridWidth - 3, y: this.gridHeight - 2 };
 
     this.hasKey = false;

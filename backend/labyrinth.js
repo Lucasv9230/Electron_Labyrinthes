@@ -1,5 +1,3 @@
-// Génération (recursive backtracker) et résolution (BFS) de labyrinthes
-
 const SIZES = { small: 11, medium: 21, large: 31 };
 
 function generateMaze(size, difficulty) {

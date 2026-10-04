@@ -1,4 +1,3 @@
-// CRUD labyrinthes pour utilisateur normal + classement
 const db = require('./database');
 
 function getUserLabyrinths(userId) {

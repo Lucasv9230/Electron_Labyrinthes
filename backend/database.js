@@ -38,9 +38,7 @@ db.exec(`
     createdAt TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (userId) REFERENCES users(id)
   );
-`);
-
-// Créer l'admin par défaut s'il n'existe pas
+`);
 const adminExists = db.prepare('SELECT id FROM users WHERE email = ?').get('admin@admin.com');
 if (!adminExists) {
   const hash = bcrypt.hashSync('admin123', 10);

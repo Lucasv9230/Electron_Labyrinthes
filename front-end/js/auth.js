@@ -48,9 +48,7 @@ async function handleRegister(e) {
   if (password !== confirm) return showError('registerError', 'Les mots de passe ne correspondent pas');
 
   const res = await window.api.auth.register({ firstName, lastName, email, password, birthYear });
-  if (!res.success) return showError('registerError', res.error);
-
-  // Connexion automatique après inscription
+  if (!res.success) return showError('registerError', res.error);
   localStorage.setItem('token', res.data.token);
   localStorage.setItem('user', JSON.stringify(res.data.user));
   window.location.href = 'lobby.html';

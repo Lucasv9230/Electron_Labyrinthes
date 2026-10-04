@@ -4,10 +4,7 @@ if (!token || !user) { window.location.href = 'auth.html'; }
 
 document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
 
-let selectedSize = 'medium';
-
-// Mapping difficulté × taille → temps limite (en secondes).
-// Curseur 1 = beaucoup de temps, curseur 10 = très peu de temps.
+let selectedSize = 'medium';
 function computeTimeLimit(size, diff) {
   const base = { small: 90, medium: 150, large: 240 }[size] || 150;
   const mini = { small: 20, medium: 30,  large: 50  }[size] || 30;

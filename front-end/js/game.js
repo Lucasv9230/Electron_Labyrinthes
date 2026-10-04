@@ -1,4 +1,3 @@
-// ── Auth + params ─────────────────────────────────────────────────────────────
 const token = localStorage.getItem('token');
 const user  = JSON.parse(localStorage.getItem('user') || 'null');
 if (!token || !user) { window.location.href = 'auth.html'; }
@@ -6,9 +5,7 @@ if (!token || !user) { window.location.href = 'auth.html'; }
 const gameSize       = sessionStorage.getItem('gameSize')       || 'medium';
 const gameDifficulty = parseInt(sessionStorage.getItem('gameDifficulty') || '5');
 
-document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
-
-// ── État ──────────────────────────────────────────────────────────────────────
+document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
 let currentMaze  = null;
 let player       = { x: 1, y: 1 };
 let hasKey       = false;
@@ -17,19 +14,13 @@ let gameOver     = false;
 let gameWon      = false;
 let playing      = false;
 let solutionPath = [];        // chemin optimal start → clé → sortie (révélé en fin de partie)
-let revealed     = false;     // true quand la solution doit être dessinée
-
-// ── Mapping difficulté × taille → temps limite (en secondes) ──────────────────
-// Curseur 1 = beaucoup de temps, curseur 10 = très peu de temps.
+let revealed     = false;     // true quand la solution doit être dessinée
 function computeTimeLimit(size, diff) {
   const base = { small: 90, medium: 150, large: 240 }[size] || 150;
-  const mini = { small: 20, medium: 30,  large: 50  }[size] || 30;
-  // Décroissance linéaire entre base (diff=1) et mini (diff=10)
+  const mini = { small: 20, medium: 30,  large: 50  }[size] || 30;
   const t = base + ((mini - base) * (diff - 1)) / 9;
   return Math.round(t);
-}
-
-// ── Chrono / Compte à rebours ─────────────────────────────────────────────────
+}
 let timerStart    = null;
 let timeLimit     = 60;       // secondes — calculé en fonction de la difficulté
 const timerEl     = document.getElementById('timerDisplay');
@@ -50,9 +41,7 @@ function updateTimer() {
   if (!timerStart) return;
   const elapsed = (Date.now() - timerStart) / 1000;
   const remaining = Math.max(0, timeLimit - elapsed);
-  timerEl.textContent = formatTime(remaining);
-
-  // Couleur d'alerte : <10s = orange, <5s = rouge
+  timerEl.textContent = formatTime(remaining);
   if (remaining <= 5)        timerEl.style.color = '#e74c3c';
   else if (remaining <= 10)  timerEl.style.color = '#f39c12';
   else                       timerEl.style.color = '';
@@ -71,15 +60,11 @@ function formatTime(s) {
 
 function getElapsed() {
   return timerStart ? (Date.now() - timerStart) / 1000 : 0;
-}
-
-// ── DOM ───────────────────────────────────────────────────────────────────────
+}
 const canvas    = document.getElementById('mazeCanvas');
 const ctx       = canvas.getContext('2d');
 const statusMsg = document.getElementById('statusMsg');
-const endPanel  = document.getElementById('endPanel');
-
-// ── Chargement du labyrinthe ──────────────────────────────────────────────────
+const endPanel  = document.getElementById('endPanel');
 async function init() {
   setStatus('Chargement du labyrinthe…', 'info');
   hideEndPanel();
@@ -89,9 +74,7 @@ async function init() {
   currentMaze = res.data;
   drawMaze();
   startGame();
-}
-
-// ── Affichage ─────────────────────────────────────────────────────────────────
+}
 function getTileSize() {
   const maxW = Math.min(window.innerWidth - 40, 900);
   const maxH = window.innerHeight - 240;
@@ -112,9 +95,7 @@ function drawMaze() {
       ctx.fillStyle = grid[y][x] === 1 ? '#1a472a' : '#0a1a0a';
       ctx.fillRect(x * ts, y * ts, ts, ts);
     }
-  }
-
-  // Chemin solution révélé (fin de partie)
+  }
   if (revealed && solutionPath.length > 0) {
     ctx.fillStyle = 'rgba(241, 196, 15, 0.55)';
     for (const c of solutionPath) {
@@ -150,9 +131,7 @@ function drawMaze() {
     ctx.textBaseline = 'middle';
     ctx.fillText('🐛', player.x * ts + ts / 2, player.y * ts + ts / 2);
   }
-}
-
-// ── Démarrage du jeu ──────────────────────────────────────────────────────────
+}
 function startGame() {
   if (!currentMaze) return;
 
@@ -176,18 +155,14 @@ function startGame() {
   gameWon      = false;
   playing      = true;
   revealed     = false;
-  solutionPath = [];
-
-  // ── Limite de temps : définie par le curseur de difficulté + la taille ────
+  solutionPath = [];
   timeLimit = computeTimeLimit(gameSize, gameDifficulty);
 
   startTimer();
   hideEndPanel();
   setStatus(`Récupère la 🔑 puis atteins la sortie 🚪 — Difficulté ${gameDifficulty}/10 · ${timeLimit}s`, 'info');
   drawMaze();
-}
-
-// ── BFS : chemin entre deux points ────────────────────────────────────────────
+}
 function bfsPath(sx, sy, ex, ey) {
   const { grid, width, height } = currentMaze;
   if (grid[sy][sx] !== 0 || grid[ey][ex] !== 0) return [];
@@ -213,9 +188,7 @@ function bfsPath(sx, sy, ex, ey) {
     }
   }
   return [];
-}
-
-// ── Chemin solution complet : start → clé → sortie (toujours le même) ────────
+}
 function buildSolutionPath() {
   if (!currentMaze) return [];
   const [sx, sy] = currentMaze.start;
@@ -224,17 +197,13 @@ function buildSolutionPath() {
   const toEnd = bfsPath(keyPos.x, keyPos.y, ex, ey);
   if (toKey.length && toEnd.length) return toKey.concat(toEnd.slice(1));
   return toKey.length ? toKey : toEnd;
-}
-
-// ── Fin de partie ────────────────────────────────────────────────────────────
+}
 function endGame(won, reason) {
   if (gameOver || gameWon) return;
   gameOver = !won;
   gameWon  = won;
   playing  = false;
-  stopTimer();
-
-  // Chemin optimal complet (start → clé → sortie), révélé dans tous les cas.
+  stopTimer();
   solutionPath = buildSolutionPath();
   revealed     = true;
 
@@ -250,9 +219,7 @@ function endGame(won, reason) {
 
   drawMaze();
   showEndPanel(won);
-}
-
-// ── Contrôles joueur ──────────────────────────────────────────────────────────
+}
 document.addEventListener('keydown', (e) => {
   if (!playing || gameOver || gameWon) return;
   const dirs = {
@@ -280,9 +247,7 @@ document.addEventListener('keydown', (e) => {
   }
 
   drawMaze();
-});
-
-// ── Panneau de fin (rejouer / retour lobby) ──────────────────────────────────
+});
 function showEndPanel(won) {
   if (!endPanel) return;
   endPanel.style.display = 'flex';
@@ -299,9 +264,7 @@ async function replay() {
   await init();
 }
 
-window.replay = replay;
-
-// ── Utilitaires ───────────────────────────────────────────────────────────────
+window.replay = replay;
 function setStatus(msg, type = 'info') {
   statusMsg.textContent = msg;
   statusMsg.className   = 'status-msg status-' + type;
@@ -313,7 +276,5 @@ function logout() {
   window.location.href = 'auth.html';
 }
 
-window.addEventListener('resize', () => drawMaze());
-
-// ── Lancement ─────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => drawMaze());
 init();
